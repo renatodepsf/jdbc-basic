@@ -5,6 +5,7 @@ import br.com.alura.bytebank.domain.cliente.DadosCadastroCliente;
 import br.com.alura.bytebank.domain.conta.ContaService;
 import br.com.alura.bytebank.domain.conta.DadosAberturaConta;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class BytebankApplication {
@@ -105,7 +106,7 @@ public class BytebankApplication {
         System.out.println("Digite o número da conta:");
         var numeroDaConta = teclado.nextInt();
         var saldo = service.consultarSaldo(numeroDaConta);
-        System.out.println("Saldo da conta: " +saldo);
+        System.out.println("Saldo da conta: " + saldo.setScale(2));
 
         System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
         teclado.next();
@@ -118,8 +119,8 @@ public class BytebankApplication {
         System.out.println("Digite o valor do saque:");
         var valor = teclado.nextBigDecimal();
 
-        service.realizarSaque(numeroDaConta, valor);
-        System.out.println("Saque realizado com sucesso!");
+        BigDecimal retorno = service.realizarSaque(numeroDaConta, valor);
+        System.out.println("Saque de $" + retorno.setScale(2) + " realizado com sucesso!");
         System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
         teclado.next();
     }
