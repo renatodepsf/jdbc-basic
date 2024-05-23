@@ -1,9 +1,6 @@
 package br.com.alura.bytebank.domain.conta;
 
-import br.com.alura.bytebank.domain.RegraDeNegocioException;
 import br.com.alura.bytebank.domain.cliente.Cliente;
-import com.sun.tools.jconsole.JConsoleContext;
-import com.sun.tools.jconsole.JConsolePlugin;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -110,5 +107,20 @@ public class ContaDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao salvar depósito", e);
         }
+    }
+
+    public BigDecimal sacar(BigDecimal valor, Integer numeroDaConta, BigDecimal saldo) {
+        try {
+            query = "update conta set saldo = ? where numero = ?";
+            BigDecimal saldoAtualizado = saldo.subtract(valor);
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setBigDecimal(1, saldoAtualizado);
+            statement.setInt(2, numeroDaConta);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao sacar", e);
+        }
+        return valor;
     }
 }
